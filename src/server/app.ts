@@ -29,13 +29,16 @@ let initialized = false;
 const ensureDb = async () => {
   if (initialized) return;
 
+  // Supabase pooler connections can reject multi-statement queries.
+  // Run schema bootstrap as individual queries to avoid startup crashes.
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       email TEXT UNIQUE,
       password TEXT
     );
-
+  `);
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS transactions (
       id SERIAL PRIMARY KEY,
       user_id INTEGER,
@@ -48,14 +51,16 @@ const ensureDb = async () => {
       strategy TEXT,
       FOREIGN KEY(user_id) REFERENCES users(id)
     );
-
+  `);
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS watchlist (
       id SERIAL PRIMARY KEY,
       user_id INTEGER,
       stock_symbol TEXT,
       FOREIGN KEY(user_id) REFERENCES users(id)
     );
-
+  `);
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS monthly_deposits (
       id SERIAL PRIMARY KEY,
       user_id INTEGER,
