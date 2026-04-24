@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createApp } from '../src/server/app';
+import { createApp } from '../src/server/app.ts';
 
 let appPromise: ReturnType<typeof createApp> | null = null;
 
