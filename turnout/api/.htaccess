@@ -1,0 +1,6 @@
+# Optional: block local config from web if Apache allows overrides
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(config\.local\.php)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>

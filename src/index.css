@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+:root {
+  --bg: #0F1115;
+  --surface: #1A1D23;
+  --surface-light: #242830;
+  --accent: #2979FF;
+  --green: #00E676;
+  --red: #FF5252;
+  --ink: #FFFFFF;
+  --ink-dim: #8E9299;
+  --line: #2D323C;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0F1115] text-white font-sans antialiased;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-[#1A1D23] border border-[#2D323C] rounded-lg overflow-hidden;
+  }
+  .panel-header {
+    @apply px-4 py-3 border-b border-[#2D323C] flex justify-between items-center;
+  }
+  .panel-title {
+    @apply text-xs font-bold uppercase tracking-widest text-[#8E9299];
+  }
+  .data-text {
+    @apply font-mono leading-none;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-[#1A1D23];
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-[#2D323C] rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#242830];
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

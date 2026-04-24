@@ -1,0 +1,3 @@
+Refactor app for Vercel fullstack deployment.
+
+Migrate backend storage from SQLite to Postgres, add a serverless API entrypoint, and configure routing/build settings for Vercel hosting.
