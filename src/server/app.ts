@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -8,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import { Pool } from 'pg';
-import { reduceHoldingsFromTx, type TxRow } from '../lib/portfolioMath';
+import { reduceHoldingsFromTx, type TxRow } from '../lib/portfolioMath.js';
 
 dotenv.config();
 dotenv.config({ path: '.env.local', override: true });
@@ -20,8 +19,11 @@ if (!DATABASE_URL) {
   throw new Error('DATABASE_URL is required for Postgres connection.');
 }
 
+const normalizedDatabaseUrl =
+  DATABASE_URL.includes('sslmode=require') ? DATABASE_URL.replace(/sslmode=require/gi, 'sslmode=no-verify') : DATABASE_URL;
+
 const pool = new Pool({
-  connectionString: DATABASE_URL,
+  connectionString: normalizedDatabaseUrl,
   ssl: DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false },
 });
 
@@ -475,6 +477,7 @@ export async function createApp() {
   });
 
   if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
